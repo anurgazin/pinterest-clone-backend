@@ -6,8 +6,6 @@ const { v4: uuidv4 } = require("uuid");
 const USERS_TABLE = "pinterest-users";
 
 const generateToken = (payload) => {
-  console.log("GENERATION: " + process.env.JWT_SECRET);
-  console.log("PAYLOAD: " + payload.username);
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "3600s" });
 };
 
@@ -86,7 +84,6 @@ const loginUser = async (req, res) => {
         user_id: user.user_id,
         username: user.username,
       });
-      console.log(token);
       res.status(200).json({ message: "Authentication successful", token });
     } else {
       res.status(401).json({ message: "Incorrect password" });

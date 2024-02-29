@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.send("I am here");
+  res.send("Welcome to the Pinterest API, please look at the documentation for more information");
 });
 
 module.exports = router;
