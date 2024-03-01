@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/images", imagesRouter);
-app.use("/list", listRouter);
+app.use("/lists", listRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
