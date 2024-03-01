@@ -45,7 +45,7 @@ const getUserById = async (req, res) => {
       res.status(404).json({ message: "User not found" });
       return;
     }
-    res.status(200).json(Item);
+    res.status(200).json({ user: Item });
   } catch (error) {
     console.error("Error getting user:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -84,7 +84,9 @@ const loginUser = async (req, res) => {
         user_id: user.user_id,
         username: user.username,
       });
-      res.status(200).json({ message: "Authentication successful", token });
+      res
+        .status(200)
+        .json({ message: "Authentication successful", token: token });
     } else {
       res.status(401).json({ message: "Incorrect password" });
     }

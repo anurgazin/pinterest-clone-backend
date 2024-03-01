@@ -4,13 +4,17 @@ const { version, author, documentation } = require("../package.json");
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.send(
-    "Welcome to the Pinterest API, please look at the documentation for more information"
-  );
+  res.status(200).json({
+    message:
+      "Welcome to the Pinterest API, please look at the documentation for more information",
+    author: author,
+    version: version,
+  });
 });
 router.get("/documentation", function (req, res, next) {
   res.status(200).json({
-    message: "Read Documentation Here: " + documentation,
+    message: "Read Documentation in the Readme file",
+    documentation: documentation,
     author: author,
     version: version,
   });

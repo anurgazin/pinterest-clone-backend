@@ -5,7 +5,8 @@
   "author": "CHOCOLAT1ER",
   "private": true,
   "scripts": {
-    "start": "nodemon ./app.js"
+    "start": "nodemon ./app.js",
+    "test": "jest"
   },
   "dependencies": {
     "aws-sdk": "^2.1559.0",
@@ -21,5 +22,9 @@
     "multer-s3": "^3.0.1",
     "nodemon": "^3.0.3",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4"
   }
 }
