@@ -51,7 +51,7 @@ const getImageById = async (req, res) => {
     },
   };
   try {
-    const image = dynamodb.scan(db_params).promise();
+    const image = await dynamodb.scan(db_params).promise();
     if (!image) {
       res.status(404).json({ message: "Image not found" });
       return;
@@ -87,7 +87,7 @@ const deleteImage = async (req, res) => {
     };
     await s3.deleteObject(s3_params).promise();
     await dynamodb.delete(db_params).promise();
-    res.status(201).json({ message: "Deleted successfully" });
+    res.status(200).json({ message: "Deleted successfully" });
   } catch (error) {
     console.error("Error deleting image:", error);
     res.status(500).json({ error: "Internal server error" });
