@@ -1,6 +1,8 @@
 {
   "name": "back-end",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "documentation": "https://github.com/anurgazin/pinterest-clone-backend/blob/main/README.md",
+  "author": "CHOCOLAT1ER",
   "private": true,
   "scripts": {
     "start": "nodemon ./app.js"
