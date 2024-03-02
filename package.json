@@ -5,7 +5,7 @@
   "author": "CHOCOLAT1ER",
   "private": true,
   "scripts": {
-    "start": "nodemon ./app.js",
+    "start": "nodemon ./server.js",
     "test": "jest"
   },
   "dependencies": {

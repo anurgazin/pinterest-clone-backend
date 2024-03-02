@@ -57,7 +57,7 @@ const getUsers = async (req, res) => {
     TableName: USERS_TABLE,
   };
   const users = await dynamodb.scan(params).promise();
-  res.status(200).json(users);
+  res.status(200).json({ users: users });
 };
 
 const loginUser = async (req, res) => {

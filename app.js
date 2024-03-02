@@ -9,7 +9,6 @@ const imagesRouter = require("./routes/images");
 const listRouter = require("./routes/list");
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -22,8 +21,5 @@ app.use("/users", usersRouter);
 app.use("/images", imagesRouter);
 app.use("/lists", listRouter);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
 
 module.exports = app;
