@@ -26,10 +26,11 @@ const addImage = async (req, res) => {
         tags: tags,
       },
     };
+    const img = db_params.Item.image_id;
     await dynamodb.put(db_params).promise();
-    res.status(201).json({ message: "Image uploaded" });
+    res.status(201).json({ message: "Image uploaded", image_id: img });
   } catch (error) {
-    console.error("Error uploading image to S3:", error);
+    console.error("Error uploading image:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -39,11 +40,11 @@ const getImages = async (req, res) => {
     TableName: IMAGE_TABLE,
   };
   const images = await dynamodb.scan(db_params).promise();
-  res.status(200).json(images);
+  res.status(200).json({ images: images });
 };
 
 const getImageById = async (req, res) => {
-  const image_id = req.params.image_id;
+  const { image_id } = req.params;
   const db_params = {
     TableName: IMAGE_TABLE,
     Key: {
@@ -51,12 +52,12 @@ const getImageById = async (req, res) => {
     },
   };
   try {
-    const image = await dynamodb.scan(db_params).promise();
-    if (!image) {
+    const { Item } = await dynamodb.get(db_params).promise();
+    if (!Item) {
       res.status(404).json({ message: "Image not found" });
       return;
     }
-    res.status(200).json(image);
+    res.status(200).json({ image: Item });
   } catch (error) {
     console.error("Error getting image:", error);
     res.status(500).json({ error: "Internal server error" });
