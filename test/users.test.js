@@ -83,6 +83,15 @@ describe("User Routes", () => {
     expect(response.body.user).toBeDefined();
     expect(response.body.user.user_id).toBe(user_id);
   });
+  it("should throw user not found", async () => {
+    const response = await request(app)
+      .get(`/users/1`)
+      .set("authorization", token)
+      .expect(404);
+
+    expect(response.body.message).toBe("User not found");
+  });
+
   it("Should throw no token provided", async () => {
     const user_id = token_user.user_id;
     const response = await request(app).get(`/users/${user_id}`).expect(401);

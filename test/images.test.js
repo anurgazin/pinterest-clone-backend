@@ -29,6 +29,17 @@ describe("Images Routes", () => {
     id = response.body.image_id;
   });
 
+  it("Should throw no token provided", async () => {
+    const buffer = Buffer.from("./test_images/test_img.jpg");
+    const response = await request(app)
+      .post(`/images/`)
+      .field("image_name", "test_image")
+      .field("tags[]", ["test", "image"])
+      .attach("image", buffer, "test_img.jpg")
+      .expect(401);
+    expect(response.body.message).toBe("Access denied. No token provided.");
+  });
+
   it("Should get all images", async () => {
     const response = await request(app)
       .get("/images")
