@@ -1,7 +1,6 @@
 const request = require("supertest");
 
 const app = require("../app");
-const { dynamodb } = require("../db/db");
 
 let token = "";
 let id = "";
