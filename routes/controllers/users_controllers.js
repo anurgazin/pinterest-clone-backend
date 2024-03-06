@@ -1,4 +1,5 @@
 const { dynamodb } = require("../../db/db");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
@@ -9,20 +10,39 @@ const generateToken = (payload) => {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "3600s" });
 };
 
-const createUser = async (req, res) => {
-  const { username, email, password } = req.body;
-  const hashedpwd = await bcrypt.hash(password, 10);
-
+const searchUser = async (email) => {
   const params = {
     TableName: USERS_TABLE,
-    Item: {
-      user_id: uuidv4(),
-      username: username,
-      email: email,
-      password: hashedpwd,
+    IndexName: "email-index",
+    KeyConditionExpression: "email = :email",
+    ExpressionAttributeValues: {
+      ":email": email,
     },
   };
+  const { Items } = await dynamodb.query(params).promise();
+
+  return Items;
+};
+
+const createUser = async (req, res) => {
   try {
+    const { username, email, password } = req.body;
+    const hashedpwd = await bcrypt.hash(password, 10);
+
+    const Items = await searchUser(email);
+    if (Items.length !== 0) {
+      res.status(409).json({ message: "User already exists" });
+      return;
+    }
+    const params = {
+      TableName: USERS_TABLE,
+      Item: {
+        user_id: uuidv4(),
+        username: username,
+        email: email,
+        password: hashedpwd,
+      },
+    };
     await dynamodb.put(params).promise();
     res.status(201).json({ message: "User created successfully" });
   } catch (error) {
@@ -62,17 +82,8 @@ const getUsers = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const params = {
-    TableName: USERS_TABLE,
-    IndexName: "email-index",
-    KeyConditionExpression: "email = :email",
-    ExpressionAttributeValues: {
-      ":email": email,
-    },
-  };
-
   try {
-    const { Items } = await dynamodb.query(params).promise();
+    const Items = await searchUser(email);
     if (Items.length === 0) {
       res.status(404).json({ message: "User not found" });
       return;

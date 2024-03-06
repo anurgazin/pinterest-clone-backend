@@ -42,6 +42,19 @@ describe("User Routes", () => {
 
     expect(response.body.message).toBe("User created successfully");
   });
+  it("Should throw user already exists(register)", async () => {
+    const new_user = {
+      username: "jest_test",
+      email: "jest_test@example.com",
+      password: "password123",
+    };
+    const response = await request(app)
+      .post("/users/register")
+      .send(new_user)
+      .expect(409);
+
+    expect(response.body.message).toBe("User already exists");
+  });
 
   it("Should throw incorrect password", async () => {
     const user = {
