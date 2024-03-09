@@ -82,9 +82,9 @@ const getUsers = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  if(email==="" || password===""){
+  if (email === "" || password === "") {
     res.status(400).json({ message: "Email and/or Password missing" });
-      return;
+    return;
   }
   try {
     const Items = await searchUser(email);
@@ -101,7 +101,12 @@ const loginUser = async (req, res) => {
       });
       res
         .status(200)
-        .json({ message: "Authentication successful", token: token });
+        .json({
+          message: "Authentication successful",
+          token: token,
+          user_id: user.user_id,
+          username: user.username,
+        });
     } else {
       res.status(401).json({ message: "Incorrect password" });
     }
