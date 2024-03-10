@@ -99,14 +99,10 @@ const loginUser = async (req, res) => {
         user_id: user.user_id,
         username: user.username,
       });
-      res
-        .status(200)
-        .json({
-          message: "Authentication successful",
-          token: token,
-          user_id: user.user_id,
-          username: user.username,
-        });
+      res.status(200).json({
+        message: "Authentication successful",
+        user: { token: token, user_id: user.user_id, username: user.username },
+      });
     } else {
       res.status(401).json({ message: "Incorrect password" });
     }
