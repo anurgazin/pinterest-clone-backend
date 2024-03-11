@@ -40,7 +40,7 @@ const getImages = async (req, res) => {
     TableName: IMAGE_TABLE,
   };
   const images = await dynamodb.scan(db_params).promise();
-  res.status(200).json({ images: images });
+  res.status(200).json({ images: images.Items });
 };
 
 const getImageById = async (req, res) => {
