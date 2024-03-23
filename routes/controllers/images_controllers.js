@@ -5,6 +5,7 @@ const IMAGE_TABLE = "pinterest-images";
 
 const addImage = async (req, res) => {
   const { image_name, tags } = req.body;
+  const tagsArray = typeof tags === "string" ? tags.split(",") : tags;
   const s3_params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `${Date.now()}-${image_name}`,
@@ -23,7 +24,7 @@ const addImage = async (req, res) => {
         image_key: data.Key,
         uploadedBy: req.user.user_id,
         uploadedAt: Date.now(),
-        tags: tags,
+        tags: tagsArray,
       },
     };
     const img = db_params.Item.image_id;
