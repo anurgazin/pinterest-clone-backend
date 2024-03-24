@@ -40,8 +40,21 @@ const getImages = async (req, res) => {
   const db_params = {
     TableName: IMAGE_TABLE,
   };
-  const images = await dynamodb.scan(db_params).promise();
-  res.status(200).json({ images: images.Items });
+  const { tags } = req.query;
+  try {
+    const { Items } = await dynamodb.scan(db_params).promise();
+    let images = Items;
+    if (tags) {
+      const filteredImages = Items.filter((img) => {
+        return tags.some((tag) => img.tags.includes(tag));
+      });
+      images = filteredImages;
+    }
+    res.status(200).json({ images: images });
+  } catch (error) {
+    console.error("Error fetching images by tags:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
 const getImageById = async (req, res) => {
@@ -96,4 +109,9 @@ const deleteImage = async (req, res) => {
   }
 };
 
-module.exports = { addImage, getImages, deleteImage, getImageById };
+module.exports = {
+  addImage,
+  getImages,
+  deleteImage,
+  getImageById,
+};
