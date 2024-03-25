@@ -46,7 +46,7 @@ const getImages = async (req, res) => {
     let images = Items;
     if (tags) {
       const filteredImages = Items.filter((img) => {
-        return tags.some((tag) => img.tags.includes(tag));
+        return tags.every((tag) => img.tags.includes(tag));
       });
       images = filteredImages;
     }
