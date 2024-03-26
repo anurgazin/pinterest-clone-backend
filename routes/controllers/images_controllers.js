@@ -5,7 +5,8 @@ const IMAGE_TABLE = "pinterest-images";
 
 const addImage = async (req, res) => {
   const { image_name, tags } = req.body;
-  const tagsArray = typeof tags === "string" ? tags.split(",") : tags;
+  const tagsArray =
+    typeof tags === "string" ? tags.toLowerCase().split(",") : tags;
   const s3_params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `${Date.now()}-${image_name}`,
@@ -46,7 +47,7 @@ const getImages = async (req, res) => {
     let images = Items;
     if (tags) {
       const filteredImages = Items.filter((img) => {
-        return tags.every((tag) => img.tags.includes(tag));
+        return tags.every((tag) => img.tags.includes(tag.toLowerCase()));
       });
       images = filteredImages;
     }
